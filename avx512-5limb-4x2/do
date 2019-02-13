@@ -1,0 +1,13 @@
+#
+# GCC v.5.4 works fine
+# Requires BMI2 and AVX-512 instruction sets
+#
+rm -f montgomery4x && \
+as thirdparty/pmp-inv-master/SL-DCC/1/source/p25519consts.S -o p25519consts.o && \
+as thirdparty/pmp-inv-master/SL-DCC/1/source/p25519mul.S -o p25519mul.o && \
+as thirdparty/pmp-inv-master/SL-DCC/1/source/p25519nsqr.S -o p25519nsqr.o && \
+gcc -mavx512f -fomit-frame-pointer -Wall -O3 -I"thirdparty/pmp-inv-master/SL-DCC/1/include" main.c montgomery.c datatype.c thirdparty/pmp-inv-master/SL-DCC/1/source/p25519.c p25519consts.o p25519mul.o p25519nsqr.o -o montgomery4x && \
+rm -f p25519consts.o && \
+rm -f p25519mul.o && \
+rm -f p25519nsqr.o && \
+./montgomery4x
